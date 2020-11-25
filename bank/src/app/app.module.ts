@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './store/store.module';
@@ -17,6 +18,7 @@ import { AppInitializerService } from './app-initializer.service';
     AppStoreModule,
     LayoutModule,
     SharedModule,
+    EffectsModule.forRoot(),
   ],
   providers: [
     {
