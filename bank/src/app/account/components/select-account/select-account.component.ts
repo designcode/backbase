@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountDispatchers } from '../../store/account.dispatchers';
 
 @Component({
   selector: 'app-bank-select-account',
@@ -6,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./select-account.component.scss'],
 })
 export class SelectAccountComponent implements OnInit {
-  constructor() {}
+  constructor(private accountDispatchers: AccountDispatchers) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.accountDispatchers.loadAccounts();
+  }
 }

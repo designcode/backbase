@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+
 export interface Account {
   name: string;
   accountNumber: string;
@@ -34,4 +36,9 @@ export enum TransactionTypes {
 export enum CreditDebitIndicators {
   CRDT = 'CRDT',
   DBIT = 'DBIT',
+}
+
+export interface FailedActionPayload {
+  errorMessage: string;
+  errorResponse: HttpErrorResponse;
 }

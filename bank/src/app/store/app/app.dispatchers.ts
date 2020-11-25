@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromApp from './app.reducer';
-import * as appActions from './app.actions';
+import * as AppActions from './app.actions';
 
 @Injectable()
 export class AppDispatchers {
   constructor(private store: Store<fromApp.State>) {}
 
   loadApplicationCompleted(): void {
-    this.store.dispatch(appActions.loadApplicationCompleted());
+    this.store.dispatch(AppActions.loadApplicationCompleted());
   }
 }
