@@ -7,14 +7,12 @@ export interface State {
   id: number;
   name: string;
   balance: number;
-  selectedAccount?: Account;
 }
 
 export const initialState: State = {
   id: 0,
   name: '',
   balance: 0,
-  selectedAccount: undefined,
 };
 
 const appReducer = createReducer(
