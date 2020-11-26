@@ -13,5 +13,5 @@ export const loadAccountsSuccess = createAction(
 
 export const loadAccountsFailure = createAction(
   '[Account] Load Accounts Failure',
-  props<{ error: FailedActionPayload }>()
+  props<FailedActionPayload>()
 );

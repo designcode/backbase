@@ -25,7 +25,7 @@ export class AccountEffects {
               errorMessage,
               errorResponse
             };
-            return of(AccountActions.loadAccountsFailure(errorMessage));
+            return of(AccountActions.loadAccountsFailure(payload));
           })
         );
     })
