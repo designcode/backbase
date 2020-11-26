@@ -31,8 +31,28 @@ export class AccountEffects {
     })
   ));
 
+  loadContacts$ = createEffect((): any => this.actions$.pipe(
+    ofType(AccountActions.loadContacts),
+    mergeMap(() => {
+      return concat(
+        of(AppActions.showLoadingIndicator()),
+        this.loadContacts(),
+        of(AppActions.hideLoadingIndicator())
+      ).pipe(
+          catchError((errorResponse: HttpErrorResponse) => {
+            const errorMessage = errorResponse && errorResponse.error && errorResponse.error.message;
+            const payload: FailedActionPayload = {
+              errorMessage,
+              errorResponse
+            };
+            return of(AccountActions.loadContactsFailure(payload));
+          })
+        );
+    })
+  ));
+
   private loadAccounts(): Observable<any> {
-    const accounts: Account[] = [{
+    const accountsMock: Account[] = [{
         name: 'Abdullah',
         accountNumber: 'NL15ABNA1234567890'
     }, {
@@ -41,11 +61,26 @@ export class AccountEffects {
     }];
 
     // Faking a backend call
-    return from([accounts]).pipe(
-      map((account: Account[]) => {
-        return AccountActions.loadAccountsSuccess({
-          accounts: account
-        });
+    return from([accountsMock]).pipe(
+      map((accounts: Account[]) => {
+        return AccountActions.loadAccountsSuccess({ accounts });
+      })
+    );
+  }
+
+  private loadContacts(): Observable<any> {
+    const contactsMock: Account[] = [{
+        name: 'Steve',
+        accountNumber: 'NL15ABNA1234567890'
+    }, {
+        name: 'Adam',
+        accountNumber: 'NL15ABNA0987654321'
+    }];
+
+    // Faking a backend call
+    return from([contactsMock]).pipe(
+      map((accounts: Account[]) => {
+        return AccountActions.loadContactsSuccess({ accounts });
       })
     );
   }

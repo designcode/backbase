@@ -10,4 +10,8 @@ export class AccountDispatchers {
   loadAccounts(): void {
     this.store.dispatch(AccountActions.loadAccounts());
   }
+
+  loadContacts(): void {
+    this.store.dispatch(AccountActions.loadContacts());
+  }
 }

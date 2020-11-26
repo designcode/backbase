@@ -1,0 +1,3 @@
+<select class="form-control" [formControl]="accountSelector" (change)="onAccountSelect()">
+  <option *ngFor="let account of accounts" [ngValue]="account">{{ account.name }} ({{ account.accountNumber }})</option>
+</select>

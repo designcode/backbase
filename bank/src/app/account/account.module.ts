@@ -7,15 +7,18 @@ import * as fromAccount from './store';
 import { AccountDispatchers } from './store/account.dispatchers';
 import { EffectsModule } from '@ngrx/effects';
 import { AccountEffects } from './store/account.effects';
+import { AccountSelectors } from './store/account.selectors';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [SelectAccountComponent],
   imports: [
     CommonModule,
+    SharedModule,
     AccountRoutingModule,
     StoreModule.forFeature(fromAccount.accountFeatureKey, fromAccount.reducer),
     EffectsModule.forFeature([AccountEffects]),
   ],
-  providers: [AccountDispatchers],
+  providers: [AccountDispatchers, AccountSelectors],
 })
 export class AccountModule {}
