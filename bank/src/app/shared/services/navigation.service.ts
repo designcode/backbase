@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account } from 'src/app/models';
 
+export enum QueryParams {
+  toAccount = 'toAccount',
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +15,7 @@ export class NavigationService {
 
   navigateToAccountsOverview(account: Account, toAccount?: Account): void {
     const queryParams = {
-      toAccount: toAccount?.accountNumber
+      [QueryParams.toAccount]: toAccount?.accountNumber
     };
     this.router.navigate(['accounts', account.accountNumber], { queryParams });
   }

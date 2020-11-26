@@ -9,9 +9,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { AccountEffects } from './store/account.effects';
 import { AccountSelectors } from './store/account.selectors';
 import { SharedModule } from '../shared/shared.module';
+import { OverviewComponent } from './components/overview/overview.component';
 
 @NgModule({
-  declarations: [SelectAccountComponent],
+  declarations: [SelectAccountComponent, OverviewComponent],
   imports: [
     CommonModule,
     SharedModule,
