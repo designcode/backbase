@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Account } from 'src/app/models';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { AccountDispatchers } from '../../store/account.dispatchers';
 import { AccountSelectors } from '../../store/account.selectors';
 
@@ -10,6 +12,12 @@ import { AccountSelectors } from '../../store/account.selectors';
   styleUrls: ['./select-account.component.scss'],
 })
 export class SelectAccountComponent implements OnInit {
+  constructor(
+    private navigationService: NavigationService,
+    private accountDispatchers: AccountDispatchers,
+    private accountSelectors: AccountSelectors
+  ) {}
+
   get accounts$(): Observable<Account[]> {
     return this.accountSelectors.getAccounts$;
   }
@@ -18,18 +26,21 @@ export class SelectAccountComponent implements OnInit {
     return this.accountSelectors.getContacts$;
   }
 
-  constructor(private accountDispatchers: AccountDispatchers, private accountSelectors: AccountSelectors) {}
+  accountSelectorForm = new FormGroup({
+    fromAccount: new FormControl(''),
+    toAccount: new FormControl(''),
+  });
+
 
   ngOnInit(): void {
     this.accountDispatchers.loadAccounts();
     this.accountDispatchers.loadContacts();
   }
 
-  setSelectedAccount(account: Account): void {
-    console.log(account);
-  }
-
-  setSelectedContact(contact: Account): void {
-    console.log(contact);
+  makePayment(): void {
+    this.navigationService.navigateToAccountsOverview(
+      this.accountSelectorForm.controls.fromAccount.value,
+      this.accountSelectorForm.controls.toAccount.value
+    );
   }
 }

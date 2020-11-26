@@ -7,6 +7,10 @@ const routes: Routes = [
     path: '',
     component: SelectAccountComponent,
   },
+  {
+    path: ':account',
+    component: SelectAccountComponent,
+  }
 ];
 
 @NgModule({

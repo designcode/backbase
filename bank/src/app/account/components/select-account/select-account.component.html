@@ -4,15 +4,15 @@
       <h3>Select Account</h3>
     </div>
     <div class="bg-white col-sm-12 p-4">
-      <div class="row">
+      <div class="row" [formGroup]="accountSelectorForm">
         <div class="col-sm-5">
-          <app-bank-account-selector [accounts]="accounts$ | async" (accountSelect)="setSelectedAccount($event)"></app-bank-account-selector>
+          <app-bank-account-selector formControlName="fromAccount" [accounts]="accounts$ | async"></app-bank-account-selector>
         </div>
         <div class="col-sm-5">
-          <app-bank-account-selector [accounts]="contacts$ | async" (accountSelect)="setSelectedContact($event)"></app-bank-account-selector>
+          <app-bank-account-selector formControlName="toAccount" [accounts]="contacts$ | async"></app-bank-account-selector>
         </div>
         <div class="col-sm-2">
-          Submit button goes here
+          <button class="btn btn-primary" (click)="makePayment()">Make Payment</button>
         </div>
       </div>
     </div>
