@@ -63,7 +63,7 @@ export class SelectAccountComponent implements OnInit {
   }
 
   makePayment(): void {
-    console.log(this.accountSelectorForm.value);
+    this.accountDispatchers.setSelectedAccount(this.accountSelectorForm.controls.fromAccount.value);
     this.navigationService.navigateToAccountsOverview(
       this.accountSelectorForm.controls.fromAccount.value,
       this.accountSelectorForm.controls.toAccount.value

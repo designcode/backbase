@@ -27,11 +27,7 @@ export class TransferComponent implements OnInit {
   }
 
   get selectedFromAccount$(): Observable<Account> {
-    return combineLatest([this.accounts$, this.route.params]).pipe(
-      map(([accounts, queryParams]: [Account[], Params]) => {
-        return accounts.filter((account: Account) => account.accountNumber === queryParams.account)[0];
-      })
-    );
+    return this.accountSelectors.getSelectedAccount$;
   }
 
   get contacts$(): Observable<Account[]> {

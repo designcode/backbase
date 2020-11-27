@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Account {
-  name: string;
+  name?: string;
   accountNumber: string;
 }
 
-export interface Summary {
+export interface Transfer {
   categoryCode: string;
   dates: BankDate;
   transaction: Transaction;
@@ -41,10 +41,4 @@ export enum CreditDebitIndicators {
 export interface FailedActionPayload {
   errorMessage: string;
   errorResponse: HttpErrorResponse;
-}
-
-export interface Transfer {
-  fromAccount: Account;
-  toAccount: Account;
-  amount: Currency;
 }

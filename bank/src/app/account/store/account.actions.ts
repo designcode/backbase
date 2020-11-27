@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { FailedActionPayload } from 'src/app/models';
-import { AccountsPayload } from './index';
+import { Account, FailedActionPayload } from 'src/app/models';
+import { AccountsPayload, TransfersPayload } from './index';
 
 export const loadAccounts = createAction(
   '[Account] Load Accounts'
@@ -27,5 +27,24 @@ export const loadContactsSuccess = createAction(
 
 export const loadContactsFailure = createAction(
   '[Account] Load Contacts Failure',
+  props<FailedActionPayload>()
+);
+
+export const setSelectedAccount = createAction(
+  '[Account] Set Selected Account',
+  props<Account>()
+);
+
+export const loadTransfers = createAction(
+  '[Account] Load Transfers'
+);
+
+export const loadTransfersSuccess = createAction(
+  '[Account] Load Transfers Success',
+  props<TransfersPayload>()
+);
+
+export const loadTransfersFailure = createAction(
+  '[Account] Load Transfers Failure',
   props<FailedActionPayload>()
 );
