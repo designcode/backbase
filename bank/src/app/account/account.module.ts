@@ -10,9 +10,10 @@ import { AccountEffects } from './store/account.effects';
 import { AccountSelectors } from './store/account.selectors';
 import { SharedModule } from '../shared/shared.module';
 import { OverviewComponent } from './components/overview/overview.component';
+import { TransferComponent } from './components/transfer/transfer.component';
 
 @NgModule({
-  declarations: [SelectAccountComponent, OverviewComponent],
+  declarations: [SelectAccountComponent, OverviewComponent, TransferComponent],
   imports: [
     CommonModule,
     SharedModule,
