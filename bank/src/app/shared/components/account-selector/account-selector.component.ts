@@ -15,8 +15,19 @@ export class AccountSelectorComponent implements OnInit {
   @Input()
   selectedAccount: Account | null = null;
 
+  @Input()
+  disableOnSelection = false;
+
   @Output()
   accountSelect = new EventEmitter<Account | null>();
+
+  get disabled(): boolean {
+    return this.selectedAccount !== undefined && this.disableOnSelection;
+  }
+
+  get selectedAccountFormatted(): string {
+    return `${this.selectedAccount?.name} (${this.selectedAccount?.accountNumber})`;
+  }
 
   ngOnInit(): void {
     if (this.selectedAccount) {

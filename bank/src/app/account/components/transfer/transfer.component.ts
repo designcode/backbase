@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Observable, Subscription, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Account } from 'src/app/models';
 import { NavigationService, QueryParams } from 'src/app/shared/services/navigation.service';
 import { AccountDispatchers } from '../../store/account.dispatchers';
@@ -13,7 +13,7 @@ import { AccountSelectors } from '../../store/account.selectors';
   templateUrl: './transfer.component.html',
   styleUrls: ['./transfer.component.scss']
 })
-export class TransferComponent implements OnInit, OnDestroy {
+export class TransferComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
@@ -46,9 +46,7 @@ export class TransferComponent implements OnInit, OnDestroy {
     );
   }
 
-  subscriptions = new Subscription();
-
-  accountSelectorForm = new FormGroup({
+  transferForm = new FormGroup({
     fromAccount: new FormControl(''),
     toAccount: new FormControl(''),
   });
@@ -59,17 +57,18 @@ export class TransferComponent implements OnInit, OnDestroy {
   }
 
   onFromAccountSelect(account: Account): void {
+    this.transferForm.controls.fromAccount.setValue(account);
     this.navigationService.navigateToAccountsOverview(account);
   }
 
   onToAccountSelect(account: Account): void {
+    this.transferForm.controls.toAccount.setValue(account);
     this.navigationService.setQueryParams({
       [QueryParams.toAccount]: account.accountNumber
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+  makePayment(): void {
+    console.log(this.transferForm.value);
   }
-
 }

@@ -1,13 +1,36 @@
-<form [formGroup]="accountSelectorForm" class="bg-white shadow-sm p-3">
+<form [formGroup]="transferForm" class="bg-white shadow-sm p-3">
   <div class="row">
-    <div class="col-sm-12 mb-4">Sidebar</div>
+    <div class="col-sm-12 mb-4">Transfer</div>
 
     <div class="col-sm-12 mb-4">
-      <app-bank-account-selector [accounts]="accounts$ | async" [selectedAccount]="selectedFromAccount$ | async" (accountSelect)="onFromAccountSelect($event)"></app-bank-account-selector>
+      <app-bank-account-selector 
+        [accounts]="accounts$ | async" 
+        [selectedAccount]="selectedFromAccount$ | async" 
+        (accountSelect)="onFromAccountSelect($event)"
+        [disableOnSelection]="true">
+      </app-bank-account-selector>
     </div>
 
     <div class="col-sm-12 mb-4">
-      <app-bank-account-selector [accounts]="contacts$ | async" [selectedAccount]="selectedToAccount$ | async" (accountSelect)="onToAccountSelect($event)"></app-bank-account-selector>
+      <app-bank-account-selector 
+        [accounts]="contacts$ | async" 
+        [selectedAccount]="selectedToAccount$ | async" 
+        (accountSelect)="onToAccountSelect($event)"
+        [disableOnSelection]="true">
+      </app-bank-account-selector>
+    </div>
+
+    <div class="col-sm-12 mb-4">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">$</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Amount">
+      </div>
+    </div>
+
+    <div class="col-sm-12 text-right">
+      <button class="btn btn-primary" (click)="makePayment()">Submit</button>
     </div>
   </div>
 </form>
