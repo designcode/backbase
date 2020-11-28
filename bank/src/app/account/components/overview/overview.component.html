@@ -1,8 +1,19 @@
 <div class="row">
   <div class="col-sm-3">
-    <app-bank-transfer></app-bank-transfer>  
+    <app-bank-transfer 
+      [accounts]="accounts$ | async" 
+      [selectedFromAccount]="selectedFromAccount$ | async" 
+      [contacts]="contacts$ | async" 
+      [selectedToAccount]="selectedToAccount$ | async" 
+      [accountBalance]="accountBalance$ | async"
+      [transferLimit]="accountTrasnferLimit$ | async"
+      [canTransfer]="canTransfer$ | async"
+      (submitTransfer)="onTransferSubmit($event)"
+    ></app-bank-transfer>  
   </div>
 
   <div class="col-sm-9">
+    {{accountBalance$ | async}}
+    <app-bank-transfer-list [transfers]="transfers$ | async"></app-bank-transfer-list>
   </div>
 </div>

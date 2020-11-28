@@ -8,6 +8,7 @@ import * as AppActions from './../../store/app/app.actions';
 import { Account, FailedActionPayload, Transfer } from 'src/app/models';
 import { Action } from '@ngrx/store';
 import { AccountSelectors } from './account.selectors';
+import { TransferPayload } from '.';
 
 @Injectable()
 export class AccountEffects {
@@ -41,23 +42,22 @@ export class AccountEffects {
         this.loadContacts(),
         of(AppActions.hideLoadingIndicator())
       ).pipe(
-          catchError((errorResponse: HttpErrorResponse) => {
-            const errorMessage = errorResponse && errorResponse.error && errorResponse.error.message;
-            const payload: FailedActionPayload = {
-              errorMessage,
-              errorResponse
-            };
-            return of(AccountActions.loadContactsFailure(payload));
-          })
-        );
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage = errorResponse && errorResponse.error && errorResponse.error.message;
+          const payload: FailedActionPayload = {
+            errorMessage,
+            errorResponse
+          };
+          return of(AccountActions.loadContactsFailure(payload));
+        })
+      );
     })
   ));
 
   loadTransfers$ = createEffect((): any => this.actions$.pipe(
     ofType(AccountActions.loadTransfers),
-    concatMap((action: Action) => of(action).pipe(withLatestFrom(this.accountSelectors.getSelectedAccount$))),
+    concatMap((action: Action) => of(action).pipe(withLatestFrom(this.accountSelectors.selectedAccount$))),
     mergeMap(([action, selectedAccount]: [Action, Account]) => {
-      console.log('effects selectedAccount', selectedAccount);
       return concat(
         of(AppActions.showLoadingIndicator()),
         this.loadTransfers(selectedAccount),
@@ -76,16 +76,25 @@ export class AccountEffects {
     )
   ));
 
-  private loadTransfers(selectedAccount: Account): Observable<any> {
-    return this.http.get<any[]>(`/assets/mocks/transactions-${selectedAccount.accountNumber}.json`).pipe(
-      map(
-        (transfers: any) => {
-          console.log('transfers', transfers);
-          return AccountActions.loadTransfersSuccess({transfers: transfers.data as Transfer[]});
-        }
-      )
-    );
-  }
+  createTransfer$ = createEffect((): any => this.actions$.pipe(
+    ofType(AccountActions.createTransfer),
+    mergeMap((action: TransferPayload) => {
+      return concat(
+        of(AppActions.showLoadingIndicator()),
+        this.createTransfer(action.transfer),
+        of(AppActions.hideLoadingIndicator())
+      ).pipe(
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage = errorResponse && errorResponse.error && errorResponse.error.message;
+          const payload: FailedActionPayload = {
+            errorMessage,
+            errorResponse
+          };
+          return of(AccountActions.createTransferFailure(payload));
+        })
+      );
+    })
+  ));
 
   private loadAccounts(): Observable<any> {
     const accountsMock: Account[] = [{
@@ -118,6 +127,22 @@ export class AccountEffects {
       map((accounts: Account[]) => {
         return AccountActions.loadContactsSuccess({ accounts });
       })
+    );
+  }
+
+  private loadTransfers(selectedAccount: Account): Observable<any> {
+    return this.http.get<any[]>(`/assets/mocks/transactions-${selectedAccount.accountNumber}.json`).pipe(
+      map(
+        (transfers: any) => {
+          return AccountActions.loadTransfersSuccess({transfers: transfers.data as Transfer[]});
+        }
+      )
+    );
+  }
+
+  private createTransfer(transfer: Transfer): Observable<any> {
+    return from([true]).pipe(
+      map(() => AccountActions.createTransferSuccess({transfer}))
     );
   }
 }

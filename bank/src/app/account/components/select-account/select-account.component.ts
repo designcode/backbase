@@ -20,7 +20,7 @@ export class SelectAccountComponent implements OnInit {
   ) {}
 
   get accounts$(): Observable<Account[]> {
-    return this.accountSelectors.getAccounts$;
+    return this.accountSelectors.accounts$;
   }
 
   get selectedFromAccount$(): Observable<Account> {
@@ -32,7 +32,7 @@ export class SelectAccountComponent implements OnInit {
   }
 
   get contacts$(): Observable<Account[]> {
-    return this.accountSelectors.getContacts$;
+    return this.accountSelectors.contacts$;
   }
 
   get selectedToAccount$(): Observable<Account> {

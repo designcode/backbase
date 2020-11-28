@@ -6,9 +6,10 @@ export interface Account {
 }
 
 export interface Transfer {
-  categoryCode: string;
-  dates: BankDate;
+  categoryCode?: string;
+  dates?: BankDate;
   transaction: Transaction;
+  merchant: Account;
 }
 
 export interface BankDate {
@@ -16,13 +17,12 @@ export interface BankDate {
 }
 
 export interface Transaction {
-  amountCurrency: Currency;
+  amountCurrency: AmountCurrency;
   type: TransactionTypes;
   creditDebitIndicator: CreditDebitIndicators;
-  merchant: Account;
 }
 
-export interface Currency {
+export interface AmountCurrency {
   amount: number;
   currencyCode: string;
 }

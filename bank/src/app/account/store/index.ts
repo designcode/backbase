@@ -8,6 +8,10 @@ export interface AccountsPayload {
   accounts: Account[];
 }
 
+export interface TransferPayload {
+  transfer: Transfer;
+}
+
 export interface TransfersPayload {
   transfers: Transfer[];
 }
@@ -16,7 +20,7 @@ export interface State {
   accounts: Account[];
   selectedAccount: Account;
   contacts: Account[];
-  transfer: Transfer[];
+  transfers: Transfer[];
 }
 export const initialState: State = {
   accounts: [],
@@ -25,7 +29,7 @@ export const initialState: State = {
     name: ''
   },
   contacts: [],
-  transfer: [],
+  transfers: [],
 };
 
 const accountReducer = createReducer(
@@ -35,7 +39,12 @@ const accountReducer = createReducer(
   on(AccountActions.setSelectedAccount, (state: State, action: Account) => {
     return { ...state, selectedAccount: state.accounts.filter((account: Account) => account.accountNumber === action.accountNumber)[0] };
   }),
-  on(AccountActions.loadTransfersSuccess, (state: State, action: TransfersPayload) => ({ ...state, transfer: action.transfers })),
+  on(AccountActions.loadTransfersSuccess, (state: State, action: TransfersPayload) => ({ ...state, transfers: action.transfers })),
+  on(AccountActions.loadTransfersFailure, (state: State) => ({ ...state, transfers: [] as Transfer[] })),
+  on(AccountActions.createTransferSuccess, (state: State, action: TransferPayload) => {
+    const newTransfers = state.transfers.concat(action.transfer);
+    return ({ ...state, transfers: newTransfers });
+  }),
 );
 
 export function reducer(state = initialState, action: Action): State {

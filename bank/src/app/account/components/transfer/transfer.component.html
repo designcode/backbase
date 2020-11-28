@@ -4,8 +4,8 @@
 
     <div class="col-sm-12 mb-4">
       <app-bank-account-selector 
-        [accounts]="accounts$ | async" 
-        [selectedAccount]="selectedFromAccount$ | async" 
+        [accounts]="accounts" 
+        [selectedAccount]="selectedFromAccount" 
         (accountSelect)="onFromAccountSelect($event)"
         [disableOnSelection]="true">
       </app-bank-account-selector>
@@ -13,8 +13,8 @@
 
     <div class="col-sm-12 mb-4">
       <app-bank-account-selector 
-        [accounts]="contacts$ | async" 
-        [selectedAccount]="selectedToAccount$ | async" 
+        [accounts]="contacts" 
+        [selectedAccount]="selectedToAccount" 
         (accountSelect)="onToAccountSelect($event)"
         [disableOnSelection]="true">
       </app-bank-account-selector>
@@ -25,12 +25,12 @@
         <div class="input-group-prepend">
           <div class="input-group-text">$</div>
         </div>
-        <input type="text" class="form-control" placeholder="Amount">
+        <input formControlName="amount" type="text" class="form-control" placeholder="Amount (Max {{transferLimit}})">
       </div>
     </div>
 
     <div class="col-sm-12 text-right">
-      <button class="btn btn-primary" (click)="makePayment()">Submit</button>
+      <button class="btn btn-primary" (click)="makePayment()" [disabled]="!canTransfer || transferForm.invalid">Submit</button>
     </div>
   </div>
 </form>

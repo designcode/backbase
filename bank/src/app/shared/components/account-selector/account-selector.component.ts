@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Account } from 'src/app/models';
 
 @Component({
@@ -6,7 +6,7 @@ import { Account } from 'src/app/models';
   templateUrl: './account-selector.component.html',
   styleUrls: ['./account-selector.component.scss']
 })
-export class AccountSelectorComponent implements OnInit {
+export class AccountSelectorComponent implements OnInit, OnChanges {
   constructor() { }
 
   @Input()
@@ -22,7 +22,7 @@ export class AccountSelectorComponent implements OnInit {
   accountSelect = new EventEmitter<Account | null>();
 
   get disabled(): boolean {
-    return this.selectedAccount !== undefined && this.disableOnSelection;
+    return !!this.selectedAccount && this.disableOnSelection;
   }
 
   get selectedAccountFormatted(): string {
@@ -30,13 +30,19 @@ export class AccountSelectorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.selectedAccount) {
-      this.onAccountChange();
-    }
+    this.onAccountChange();
+  }
+
+  ngOnChanges(): void {
+    this.onAccountChange();
   }
 
   onAccountChange(): void {
     this.accountSelect.emit(this.selectedAccount);
   }
 
+  reset(): void {
+    this.selectedAccount = null;
+    this.onAccountChange();
+  }
 }

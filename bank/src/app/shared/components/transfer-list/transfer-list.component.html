@@ -1,0 +1,29 @@
+<div class="bg-white shadow-sm p-3">
+<table class="table">
+  <!--<thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>-->
+  <tbody>
+    <tr *ngFor="let transfer of transfers">
+      <td scope="row">{{ transfer.dates.valueDate | date}}</td>
+      <td></td>
+      <td>
+        <strong>{{ transfer.merchant.name }}</strong>
+        <div class="small">{{ transfer.transaction.type }}</div>
+      </td>
+      <td class="text-right">
+        <strong>
+          <span *ngIf="transfer.transaction.creditDebitIndicator === CreditDebitIndicators.CRDT">+</span>
+          <span *ngIf="transfer.transaction.creditDebitIndicator === CreditDebitIndicators.DBIT">-</span>
+          {{ transfer.transaction.amountCurrency.amount | currency: transfer.transaction.amountCurrency.currencyCode }}
+        </strong>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

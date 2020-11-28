@@ -6,5 +6,12 @@
 
 
 <ng-container *ngIf="disabled">
-  <input type="text" [value]="selectedAccountFormatted" disabled class="form-control" />
+
+
+  <div class="input-group">
+    <input type="text" [value]="selectedAccountFormatted" disabled class="form-control" />
+    <div class="input-group-append" (click)="reset()">
+      <div class="input-group-text cross">x</div>
+    </div>
+  </div>
 </ng-container>
