@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CreditDebitIndicators, Transfer } from 'src/app/models';
 
 @Component({
@@ -6,7 +6,7 @@ import { CreditDebitIndicators, Transfer } from 'src/app/models';
   templateUrl: './transfer-list.component.html',
   styleUrls: ['./transfer-list.component.scss']
 })
-export class TransferListComponent implements OnInit {
+export class TransferListComponent {
 
   @Input()
   transfers: Transfer[] = [];
@@ -15,10 +15,5 @@ export class TransferListComponent implements OnInit {
   transferClick = new EventEmitter<Transfer>();
 
   CreditDebitIndicators = CreditDebitIndicators;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }
