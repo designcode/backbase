@@ -13,7 +13,9 @@
   </div>
 
   <div class="col-sm-9">
-    {{accountBalance$ | async}}
-    <app-bank-transfer-list [transfers]="transfers$ | async"></app-bank-transfer-list>
+    <div class="bg-white shadow-sm p-3">
+      {{accountBalance$ | async}}
+      <app-bank-transfer-list [transfers]="transfers$ | async"></app-bank-transfer-list>
+    </div>
   </div>
 </div>
