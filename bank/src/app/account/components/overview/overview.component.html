@@ -14,7 +14,8 @@
 
   <div class="col-sm-9">
     <div class="bg-white shadow-sm p-3">
-      {{accountBalance$ | async}}
+      <app-bank-search-sort-header [sortingOptions]="transferQuery$ | async" (search)="onSearch($event)" (sort)="onSort($event)"></app-bank-search-sort-header>
+      
       <app-bank-transfer-list [transfers]="transfers$ | async"></app-bank-transfer-list>
     </div>
   </div>

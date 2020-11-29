@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Account, Transfer } from 'src/app/models';
+import { Account, QueryModel, Transfer } from 'src/app/models';
+import { SortingOptions } from 'src/app/shared/components/sort-button/sort-button.component';
 import { NavigationService, QueryParams } from 'src/app/shared/services/navigation.service';
 import { AccountDispatchers } from '../../store/account.dispatchers';
 import { AccountSelectors } from '../../store/account.selectors';
@@ -57,6 +58,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     return this.accountSelectors.accountTrasnferLimit$;
   }
 
+  get transferQuery$(): Observable<QueryModel> {
+    return this.accountSelectors.transferQuery$;
+  }
+
   subscriptions = new Subscription();
 
   ngOnInit(): void {
@@ -69,6 +74,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.accountDispatchers.loadTransfers();
       })
     );
+  }
+
+  onSearch(search: string): void {
+    this.accountDispatchers.setTransferQuery({ search });
+  }
+
+  onSort(sortingOptions: SortingOptions): void {
+    this.accountDispatchers.setTransferQuery({
+      ...sortingOptions
+    });
   }
 
   onTransferSubmit(transfer: Transfer): void {

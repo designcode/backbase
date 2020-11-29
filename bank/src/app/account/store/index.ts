@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { Account, Transfer } from 'src/app/models';
+import { Account, QueryModel, Transfer } from 'src/app/models';
 import * as AccountActions from './account.actions';
 
 export const accountFeatureKey = 'account';
@@ -16,11 +16,16 @@ export interface TransfersPayload {
   transfers: Transfer[];
 }
 
+export interface QueryModelPayload {
+  query: QueryModel;
+}
+
 export interface State {
   accounts: Account[];
   selectedAccount: Account;
   contacts: Account[];
   transfers: Transfer[];
+  query: QueryModel;
 }
 export const initialState: State = {
   accounts: [],
@@ -30,6 +35,11 @@ export const initialState: State = {
   },
   contacts: [],
   transfers: [],
+  query: {
+    search: undefined,
+    sortBy: undefined,
+    sortOrder: undefined
+  }
 };
 
 const accountReducer = createReducer(
@@ -44,6 +54,10 @@ const accountReducer = createReducer(
   on(AccountActions.createTransferSuccess, (state: State, action: TransferPayload) => {
     const newTransfers = state.transfers.concat(action.transfer);
     return ({ ...state, transfers: newTransfers });
+  }),
+  on(AccountActions.setTransferQuery, (state: State, action: QueryModelPayload) => {
+    const mergedQuery = {...state.query, ...action.query};
+    return ({ ...state, query: mergedQuery });
   }),
 );
 

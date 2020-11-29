@@ -1,0 +1,14 @@
+<div class="row mb-4">
+  <div class="col-sm-6">
+    <input [formControl]="searchField" type="text" class="form-control" placeholder="Search by typing" />
+  </div>
+  <div class="col-sm-6 text-right">
+    Sort by
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <app-bank-sort-button appBankRemoveHost label="Date" [name]="SortBy.Date" [sortingOptions]="sortingOptions" (sort)="onSort($event)"></app-bank-sort-button>
+      <app-bank-sort-button appBankRemoveHost label="Beneficiary" [name]="SortBy.Beneficiary" [sortingOptions]="sortingOptions" (sort)="onSort($event)"></app-bank-sort-button>
+      <app-bank-sort-button appBankRemoveHost label="Amount" [name]="SortBy.Amount" [sortingOptions]="sortingOptions" (sort)="onSort($event)"></app-bank-sort-button>
+    </div>
+  </div>
+</div>

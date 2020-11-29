@@ -13,7 +13,7 @@ export interface Transfer {
 }
 
 export interface BankDate {
-  valueDate: number;
+  valueDate: number | string | Date;
 }
 
 export interface Transaction {
@@ -41,4 +41,21 @@ export enum CreditDebitIndicators {
 export interface FailedActionPayload {
   errorMessage: string;
   errorResponse: HttpErrorResponse;
+}
+
+export interface QueryModel {
+  search?: string | undefined;
+  sortBy?: SortBy | undefined;
+  sortOrder?: SortingOrders | undefined;
+}
+
+export enum SortBy {
+  Date = 'date',
+  Beneficiary = 'beneficiary',
+  Amount = 'amount'
+}
+
+export enum SortingOrders {
+  Asc = 'ascending',
+  Dsc = 'descending',
 }

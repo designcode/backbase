@@ -5,7 +5,7 @@ import { map, mergeMap, catchError, concatMap, withLatestFrom } from 'rxjs/opera
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AccountActions from './account.actions';
 import * as AppActions from './../../store/app/app.actions';
-import { Account, FailedActionPayload, Transfer } from 'src/app/models';
+import { Account, FailedActionPayload, QueryModel, SortBy, SortingOrders, Transfer } from 'src/app/models';
 import { Action } from '@ngrx/store';
 import { AccountSelectors } from './account.selectors';
 import { TransferPayload } from '.';
@@ -55,12 +55,14 @@ export class AccountEffects {
   ));
 
   loadTransfers$ = createEffect((): any => this.actions$.pipe(
-    ofType(AccountActions.loadTransfers),
-    concatMap((action: Action) => of(action).pipe(withLatestFrom(this.accountSelectors.selectedAccount$))),
-    mergeMap(([action, selectedAccount]: [Action, Account]) => {
+    ofType(AccountActions.loadTransfers, AccountActions.setTransferQuery),
+    concatMap((action: Action) => of(action).pipe(
+      withLatestFrom(this.accountSelectors.selectedAccount$, this.accountSelectors.transferQuery$)
+    )),
+    mergeMap(([action, selectedAccount, query]: [Action, Account, QueryModel]) => {
       return concat(
         of(AppActions.showLoadingIndicator()),
-        this.loadTransfers(selectedAccount),
+        this.loadTransfers(selectedAccount, query),
         of(AppActions.hideLoadingIndicator())
       ).pipe(
           catchError((errorResponse: HttpErrorResponse) => {
@@ -130,11 +132,16 @@ export class AccountEffects {
     );
   }
 
-  private loadTransfers(selectedAccount: Account): Observable<any> {
+  private loadTransfers(selectedAccount: Account, query: QueryModel): Observable<any> {
     return this.http.get<any[]>(`/assets/mocks/transactions-${selectedAccount.accountNumber}.json`).pipe(
       map(
         (transfers: any) => {
-          return AccountActions.loadTransfersSuccess({transfers: transfers.data as Transfer[]});
+          const queriedTransfers = (transfers.data as Transfer[])
+            .filter((transfer: Transfer) =>
+              !!query.search?.toLowerCase() ? transfer.merchant.name?.toLowerCase().indexOf(query.search) !== -1 : true
+            )
+            .sort(this.sortTransfers(query));
+          return AccountActions.loadTransfersSuccess({transfers: queriedTransfers as Transfer[]});
         }
       )
     );
@@ -144,5 +151,37 @@ export class AccountEffects {
     return from([true]).pipe(
       map(() => AccountActions.createTransferSuccess({transfer}))
     );
+  }
+
+  private sortTransfers(query: QueryModel): any {
+    const sortFunc = (a: Transfer, b: Transfer): number => {
+      let c: any;
+      let d: any;
+
+      switch (query.sortBy) {
+        case SortBy.Date:
+          c = new Date(a.dates?.valueDate as string).getTime();
+          d = new Date(b.dates?.valueDate as string).getTime();
+          break;
+        case SortBy.Beneficiary:
+          c = a.merchant.name;
+          d = b.merchant.name;
+          break;
+        case SortBy.Amount:
+          c = a.transaction.amountCurrency.amount;
+          d = b.transaction.amountCurrency.amount;
+          break;
+      }
+
+      switch (query.sortOrder) {
+        case SortingOrders.Asc:
+        default:
+          return c - d;
+        case SortingOrders.Dsc:
+          return d - c;
+      }
+    };
+
+    return sortFunc;
   }
 }

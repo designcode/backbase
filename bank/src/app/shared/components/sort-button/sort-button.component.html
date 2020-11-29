@@ -1,0 +1,7 @@
+<button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': sortingOptions.sortBy === name}" (click)="onSort(name)">
+    <span class="d-inline">{{label}}</span>
+    <ng-container *ngIf="sortingOptions.sortBy === name">
+        <span class="oi oi-sort-ascending" *ngIf="sortingOptions.sortOrder === SortingOrders.Asc"></span>
+        <span class="oi oi-sort-descending" *ngIf="sortingOptions.sortOrder === SortingOrders.Dsc"></span>
+    </ng-container>
+</button>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { Account, CreditDebitIndicators, Transfer } from 'src/app/models';
+import { Account, CreditDebitIndicators, QueryModel, Transfer } from 'src/app/models';
 import * as fromAccount from './index';
 
 
@@ -13,6 +13,8 @@ const getAccounts = createSelector(getAccountState, (state: fromAccount.State) =
 const getSelectedAccount = createSelector(getAccountState, (state: fromAccount.State) => state.selectedAccount);
 
 const getContacts = createSelector(getAccountState, (state: fromAccount.State) => state.contacts);
+
+const getTransferQuery = createSelector(getAccountState, (state: fromAccount.State) => state.query);
 
 const getTransfers = createSelector(getAccountState, (state: fromAccount.State) => state.transfers);
 
@@ -44,6 +46,10 @@ export class AccountSelectors {
 
   get contacts$(): Observable<Account[]> {
     return this.store.select(getContacts).pipe(distinctUntilChanged());
+  }
+
+  get transferQuery$(): Observable<QueryModel> {
+    return this.store.select(getTransferQuery).pipe(distinctUntilChanged());
   }
 
   get transfers$(): Observable<Transfer[]> {
