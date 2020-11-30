@@ -133,7 +133,7 @@ export class AccountEffects {
   }
 
   private loadTransfers(selectedAccount: Account, query: QueryModel): Observable<any> {
-    return this.http.get<any[]>(`/assets/mocks/transactions-${selectedAccount.accountNumber}.json`).pipe(
+    return this.http.get<any[]>(`./assets/mocks/transactions-${selectedAccount.accountNumber}.json`).pipe(
       map(
         (transfers: any) => {
           const queriedTransfers = (transfers.data as Transfer[])
