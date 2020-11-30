@@ -1,84 +1,74 @@
-# Backbase Front End Assignment: Make A Transaction
+# Bank
 
-## Assignment Purpose
+This is the documentation for Backbase assignment. It can be live previewed at [https://designcode.github.io/peach-bank/accounts]
 
-The purpose of this test is to show off your level of front-end development skills and to show your knowledge of modern front-end frameworks and practices.
+## Architecture
 
-## Brief Description
+I have setup the application using Angular 11 (It's a green field project so why not use the latest :) and NGRX for state management.
+I've setup and created components keeping in mind that this code can be extended into a full working banking app.
 
-For this assignment, you need to develop a single page application according to the provided design with the functionality of transferring money and showing the past transactions in a historical transactions list.
+Business logic is setup to support multiple accounts (Current, Saving) like in any online banking environment. A lot of focus has been
+put to make application extendable and making sure that the components are as slim as possible. All business logic is placed reducer and
+selectors and components are mostly dumb.
 
-## Functional Requirements
+As a result, I've focused very less on styling application. I've used bootstrap to setup the layout.
 
-### Transfer Money
+### NGRX
 
-As a user, I should be able to transfer money using the Transfer Money form as shown in the UI Design.
+I am using NGRX Store to dispatch actions and reduce the data and Effects for side effects. I've also introduced Dispatchers which are
+basically wrappers on top of Actions. Also, selectors are exposed via a Selector class. This way, components no nothing about store and
+stays slim and dumb.
 
----
+### Module Hierarchy
 
-As a user I should be able to:
+I've splitted functionality in couple of modules.
 
-1. Fill in the "TO ACCOUNT" and "AMOUNT" fields of the form. 
-    - Assume that the "FROM ACCOUNT" field is pre-filled with the data shown in the UI Design and is DISABLED.
-2. Press "Submit" and preview the entered data.
-3. Press "Transfer" on the preview screen. 
-    - When the transfer is pressed the new transfer should appear at the top of the transactions list, and the balance in the "FROM ACCOUNT" field should have decreased by the amount of the transfer.
+#### App Module
 
-Non-functional requirements:
+App module is the root module that imports Routing, Store, Shared and other modules for Root. It also uses AppInitializerService that can contain
+any initialization related functionality.
 
-- Reset the form to its initial state after the transfer has been completed successfully.
-- A user shouldn't be able to overdraft their account beyond a balance of $ -500.00.
+#### Store Module
 
-### Transaction History
+Store Module registers Effects and Reducer for Root. All the application/root level state management goes in there.
 
-As a user, I should be able to view recent transactions in an ordered list.
+#### Shared Module
 
-As a user, I should be able to search my recent transactions by typing a keyword in the search field.
+Shared module imports, declare and exports common modules like FormModule etc. This way you don't have import those modules individually in your feature
+module but you juat import shared.
 
-As a user, I should be able to sort by recent transactions by Date, Amount and Beneficiary by clicking the corresponding sorting action.
+#### Layout Module
 
----
+As the name implies, Layout Module contains all the dumb layout related module (header, footer etc)
 
-As a user I should be able to:
+## Notes on Testing
 
-1. View a list of my recent transactions.
-    - Mock data is provided in the "mock" folder.
-2. See the transactions list updated with the new transaction when a new money transfer has taken place.
-3. Filter the transactions list by typing a keyword in the Search field.
-    - The transactions list should update immediately at every keystroke.
-4. Clear the filter by clicking an 'x' icon in the Search field.
-4. Sort the transactions list by Date, Beneficiary and Amount.
+To save time, I've tested handful of items you can see the tests for following items
 
-Non-functional requirements (bonus points):
+- remove-host.directive.spec.ts
+- sort-button.component.spec.ts
+- account.effects.spec
 
-- The Sorting order (ascending/descending) should be persistent across all sorting options; i.e. If you are sorting by beneficiary ASC and switch the sorting option to Amount, the sorting order should stay ASC
-- i18n: add multi-language support
-- a11y: WCAG level A
-- Share your solution on the remote repository; i.e. Github, Bitbucket, GitLab...
-- deploy to a static hosting platform of your choice; i.e. Netlify, Firebase, Vercel, Github pages or Heroku
-- decent test coverage
+## Development server
 
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Technology Restrictions
+## Code scaffolding
 
-### Read Carefully!
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-- Architect your application any way you want, focus on clean, reusable code. Your code should be DRY, with a focus on front-end best practices.
-- We are open to seeing applications written in any modern framework, but we prefer the latest Angular. Explain why you've chosen a different framework in the README.
-- You can use any CSS framework, but we prefer if you don't.
-- Responsiveness is required in this assignment.
-- Create a "README.md" file explaining:
-    - how to set up and run/test the app
-    - choice of the framework (if not Angular)
-    - application structure
+## Build
 
-## Helpful Information
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-- The design to be developed is provided as a PNG for quick reference in the "design" folder.
-- Images and icons have been provided in the assets folder. Transaction images are provided as base64 images in the transaction JSON.
-- The font for the UI Design can be found on Google fonts: https://fonts.google.com/specimen/Kanit
+## Running unit tests
 
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Good luck!
+## Running end-to-end tests
 
-... and show us what you got!
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
