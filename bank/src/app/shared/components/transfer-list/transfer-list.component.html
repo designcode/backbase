@@ -4,8 +4,10 @@
       <td class="col-3 col-sm-2">
         {{ transfer.dates.valueDate | date}}
       </td>
-      <td class="d-none col-sm-2"></td>
-      <td class="col-5 col-sm-5">
+      <td class="d-none d-sm-block col-sm-1">
+        <img src="./assets/images/avatars/{{transfer.merchant.name.toLowerCase().split(' ').join('-')}}.png" [alt]="transfer.merchant.name" class="img-thumbnail">
+      </td>
+      <td class="col-5 col-sm-6">
         <strong>{{ transfer.merchant.name }}</strong>
         <div class="small">{{ transfer.transaction.type }}</div>
       </td>
