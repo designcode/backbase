@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { QueryModel, SortBy } from 'src/app/models';
 import { SortingOptions } from '../sort-button/sort-button.component';
 
@@ -43,8 +43,13 @@ export class SearchSortHeaderComponent implements OnInit, OnDestroy {
   }
 
   private initSearch(): Subscription {
-    return this.searchField.valueChanges.pipe(distinctUntilChanged()).subscribe((search: string) => {
-      this.search.emit(search);
-    });
+    return this.searchField.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(500)
+      )
+      .subscribe((search: string) => {
+        this.search.emit(search);
+      });
   }
 }

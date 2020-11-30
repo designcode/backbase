@@ -1,21 +1,15 @@
 <table class="table">
-  <!--<thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>-->
   <tbody>
-    <tr *ngFor="let transfer of transfers">
-      <td scope="row">{{ transfer.dates.valueDate | date}}</td>
-      <td></td>
-      <td>
+    <tr class="row" *ngFor="let transfer of transfers">
+      <td class="col-3 col-sm-2">
+        {{ transfer.dates.valueDate | date}}
+      </td>
+      <td class="d-none col-sm-2"></td>
+      <td class="col-5 col-sm-5">
         <strong>{{ transfer.merchant.name }}</strong>
         <div class="small">{{ transfer.transaction.type }}</div>
       </td>
-      <td class="text-right">
+      <td class="col-4 col-sm-3 text-right">
         <strong>
           <span *ngIf="transfer.transaction.creditDebitIndicator === CreditDebitIndicators.CRDT">+</span>
           <span *ngIf="transfer.transaction.creditDebitIndicator === CreditDebitIndicators.DBIT">-</span>

@@ -5,10 +5,10 @@
     </div>
     <div class="bg-white col-sm-12 p-4">
       <div class="row" [formGroup]="accountSelectorForm">
-        <div class="col-sm-5">
+        <div class="col-sm-5 mb-4">
           <app-bank-account-selector [accounts]="accounts$ | async" [selectedAccount]="selectedFromAccount$ | async" (accountSelect)="onFromAccountSelect($event)"></app-bank-account-selector>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-5 mb-4">
           <app-bank-account-selector [accounts]="contacts$ | async" [selectedAccount]="selectedToAccount$ | async" (accountSelect)="onToAccountSelect($event)"></app-bank-account-selector>
         </div>
         <div class="col-sm-2">
