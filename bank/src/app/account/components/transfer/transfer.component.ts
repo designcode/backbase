@@ -65,8 +65,6 @@ export class TransferComponent implements OnChanges {
     this.navigationService.setQueryParams({
       [QueryParams.toAccount]: account ? account.accountNumber : ''
     });
-
-    console.log(this.transferForm.value);
   }
 
   makePayment(): void {

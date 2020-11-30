@@ -7,7 +7,7 @@ export class RemoveHostDirective implements OnInit {
 
   constructor(private el: ElementRef) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const nativeElement: HTMLElement = this.el.nativeElement;
     const parentElement: HTMLElement = nativeElement.parentElement as HTMLElement;
     // move all children out of the element
