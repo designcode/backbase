@@ -154,6 +154,7 @@ export class AccountEffects {
   }
 
   private sortTransfers(query: QueryModel): any {
+    // TODO: This function is dirty, but then again, this logic should be in back-end
     const sortFunc = (a: Transfer, b: Transfer): number => {
       let c: any;
       let d: any;
@@ -164,8 +165,8 @@ export class AccountEffects {
           d = new Date(b.dates?.valueDate as string).getTime();
           break;
         case SortBy.Beneficiary:
-          c = a.merchant.name;
-          d = b.merchant.name;
+          c = a.merchant.name?.toLowerCase();
+          d = b.merchant.name?.toLowerCase();
           break;
         case SortBy.Amount:
           c = a.transaction.amountCurrency.amount;
@@ -173,12 +174,22 @@ export class AccountEffects {
           break;
       }
 
-      switch (query.sortOrder) {
-        case SortingOrders.Asc:
-        default:
-          return c - d;
-        case SortingOrders.Dsc:
-          return d - c;
+      if (query.sortBy === SortBy.Beneficiary) {
+        switch (query.sortOrder) {
+          case SortingOrders.Asc:
+          default:
+            return c.localeCompare(d);
+          case SortingOrders.Dsc:
+            return d.localeCompare(c);
+        }
+      } else {
+        switch (query.sortOrder) {
+          case SortingOrders.Asc:
+          default:
+            return c - d;
+          case SortingOrders.Dsc:
+            return d - c;
+        }
       }
     };
 
