@@ -65,12 +65,15 @@ export class TransferComponent implements OnChanges {
     this.navigationService.setQueryParams({
       [QueryParams.toAccount]: account ? account.accountNumber : ''
     });
+
+    console.log(this.transferForm.value);
   }
 
   makePayment(): void {
     if (this.transferForm.valid) {
       this.submitTransfer.emit(this.mapFormToTransfer());
-      this.transferForm.reset();
+      this.transferForm.controls.toAccount.reset();
+      this.transferForm.controls.amount.reset();
     }
   }
 

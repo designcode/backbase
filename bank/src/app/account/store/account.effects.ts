@@ -5,7 +5,7 @@ import { map, mergeMap, catchError, concatMap, withLatestFrom } from 'rxjs/opera
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AccountActions from './account.actions';
 import * as AppActions from './../../store/app/app.actions';
-import { Account, FailedActionPayload, QueryModel, SortBy, SortingOrders, Transfer } from 'src/app/models';
+import { Account, CreditDebitIndicators, FailedActionPayload, QueryModel, SortBy, SortingOrders, Transfer } from 'src/app/models';
 import { Action } from '@ngrx/store';
 import { AccountSelectors } from './account.selectors';
 import { TransferPayload } from '.';
@@ -169,8 +169,10 @@ export class AccountEffects {
           d = b.merchant.name?.toLowerCase();
           break;
         case SortBy.Amount:
-          c = a.transaction.amountCurrency.amount;
-          d = b.transaction.amountCurrency.amount;
+          c = a.transaction.creditDebitIndicator === CreditDebitIndicators.CRDT ?
+                a.transaction.amountCurrency.amount : -(a.transaction.amountCurrency.amount);
+          d = b.transaction.creditDebitIndicator === CreditDebitIndicators.CRDT ?
+                b.transaction.amountCurrency.amount : -(b.transaction.amountCurrency.amount);
           break;
       }
 
